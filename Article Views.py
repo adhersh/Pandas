@@ -47,10 +47,19 @@ Output:
 import pandas as pd
 
 def article_views(views: pd.DataFrame) -> pd.DataFrame:
-    merged_df = views.merge(views,how="inner",left_on=['author_id','viewer_id'],right_on=['viewer_id','author_id'])
-    result_df = merged_df[merged_df['author_id_x'] == merged_df['viewer_id_x']]
-    result_df=result_df[['author_id_x']].drop_duplicates()
-    result_df.columns=['id']
-    result_df= result_df.sort_values(by='id')
-    return result_df
+
+  merged_df = views.merge(views, how='inner', left_on=['author_id', 'viewer_id'], right_on= ['viewer_id', 'author_id'])
     
+    # Filter for rows where author_id equals viewer_id
+  result_df = merged_df[merged_df['author_id_x'] == merged_df['viewer_id_x']]
+    
+    # Select the 'author_id_x' column and remove duplicates
+  result_df = result_df[['author_id_x']].drop_duplicates()
+    
+    # Rename the column to 'id'
+  result_df.columns = ['id']
+    
+    # Sort the result by 'id' in ascending order
+  result_df = result_df.sort_values(by='id')
+    
+  return result_df
